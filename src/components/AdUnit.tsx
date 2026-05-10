@@ -8,9 +8,20 @@ interface AdUnitProps {
   type?: 'header' | 'sidebar' | 'inline' | 'grid';
 }
 
+const AD_CONFIG = {
+  client: "pub-XXXXXXXXXXXXXXXX", // REPLACE WITH YOUR PUB ID
+  slots: {
+    header: "XXXXXXXXXX",       // REPLACE WITH YOUR SLOT ID
+    grid: "XXXXXXXXXX",         // REPLACE WITH YOUR SLOT ID
+    inline: "XXXXXXXXXX"        // REPLACE WITH YOUR SLOT ID
+  }
+};
+
 const AdUnit: React.FC<AdUnitProps> = ({ slot, format = 'auto', style, className, type }) => {
   // In production, this would contain the Google AdSense code
   // For now, we'll render a high-visibility placeholder that matches the site's brutalist theme
+  
+  const currentSlot = slot || (type ? (AD_CONFIG.slots as any)[type] : undefined);
   
   const getPlaceholderStyles = () => {
     switch (type) {
@@ -40,12 +51,11 @@ const AdUnit: React.FC<AdUnitProps> = ({ slot, format = 'auto', style, className
         Passive Income Target: $2,000/mo
       </div>
       
-      {/* Real AdSense would be injected here */}
       {/* 
       <ins className="adsbygoogle"
            style={{ display: 'block', ...style }}
-           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-           data-ad-slot={slot}
+           data-ad-client={AD_CONFIG.client}
+           data-ad-slot={currentSlot}
            data-ad-format={format}
            data-full-width-responsive="true"></ins>
       <script>
