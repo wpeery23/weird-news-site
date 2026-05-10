@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "aggregate": "node src/scripts/aggregate.js",
-    "scheduler": "node src/scripts/scheduler.js"
+    "scheduler": "node src/scripts/scheduler.js",
+    "setup-env": "node src/scripts/setup-env.js"
   },
   "keywords": [],
   "author": "",
