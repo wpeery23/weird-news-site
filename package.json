@@ -1,0 +1,38 @@
+{
+  "name": "weird-news-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev --webpack -H 0.0.0.0 -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "aggregate": "node src/scripts/aggregate.js",
+    "scheduler": "node src/scripts/scheduler.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "^25.6.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.5.0",
+    "axios": "^1.16.0",
+    "better-sqlite3": "^12.9.0",
+    "cheerio": "^1.2.0",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^1.14.0",
+    "next": "^16.2.6",
+    "postcss": "^8.5.14",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "rss-parser": "^3.13.0",
+    "slugify": "^1.6.9",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3"
+  }
+}
