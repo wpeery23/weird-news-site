@@ -44,3 +44,16 @@ Ad units are strategically placed via the `AdUnit` component:
 - Article Body (Top and Bottom)
 
 To swap with live AdSense code, update `src/components/AdUnit.tsx`.
+
+## Deployment
+
+### Vercel (Recommended)
+1. Push this repository to GitHub.
+2. Import the project to Vercel.
+3. Add the following environment variables in Vercel:
+   - `CRON_SECRET`: A long random string (used to secure the cron endpoint).
+4. Vercel will automatically detect `vercel.json` and set up the cron job to hit `/api/cron/aggregate` every 20 minutes.
+
+### Production Database
+The project currently uses a local SQLite database. For production on Vercel, we recommend migrating to **Turso** (which is SQLite-compatible and works at the edge).
+Update `src/lib/db.js` to use the `@libsql/client` if you move to Turso.
