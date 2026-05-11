@@ -4,8 +4,8 @@ import Link from "next/link";
 import { formatDistance } from "date-fns";
 import AdUnit from "@/components/AdUnit";
 
-export default function Home() {
-  const articles = getArticles(24);
+export default async function Home() {
+  const articles = await getArticles(24);
 
   return (
     <div>
@@ -44,7 +44,7 @@ export default function Home() {
                     <span className="bg-yellow-400 text-black text-[10px] font-black px-2 py-0.5 uppercase">
                       {article.category}
                     </span>
-                    <span className="text-xs font-bold text-gray-500 uppercase">
+                    <span className="text-xs font-bold uppercase text-gray-500 uppercase">
                       {article.source_name}
                     </span>
                   </div>

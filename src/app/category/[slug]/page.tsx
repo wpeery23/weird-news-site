@@ -22,7 +22,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  const articles = getArticles(30, categoryName);
+  const articles = await getArticles(30, categoryName);
 
   return (
     <div>

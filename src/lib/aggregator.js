@@ -47,18 +47,35 @@ async function runAggregation() {
         const category = source.category;
         
         // Basic deduplication
-        const existing = db.prepare('SELECT id FROM articles WHERE url = ?').get(url);
-        if (existing) continue;
+        try {
+          const existing = await db.execute({
+            sql: 'SELECT id FROM articles WHERE url = ?',
+            args: [url]
+          });
+          if (existing.rows && existing.rows.length > 0) continue;
+        } catch (err) {
+          // Ignore lookup errors
+        }
         
         let slug = slugify(title, { lower: true, strict: true });
         // Ensure slug is unique
-        let slugExists = db.prepare('SELECT id FROM articles WHERE slug = ?').get(slug);
-        let counter = 1;
-        let originalSlug = slug;
-        while (slugExists) {
-          slug = `${originalSlug}-${counter}`;
-          slugExists = db.prepare('SELECT id FROM articles WHERE slug = ?').get(slug);
-          counter++;
+        try {
+          let slugExists = await db.execute({
+            sql: 'SELECT id FROM articles WHERE slug = ?',
+            args: [slug]
+          });
+          let counter = 1;
+          let originalSlug = slug;
+          while (slugExists.rows && slugExists.rows.length > 0) {
+            slug = `${originalSlug}-${counter}`;
+            slugExists = await db.execute({
+              sql: 'SELECT id FROM articles WHERE slug = ?',
+              args: [slug]
+            });
+            counter++;
+          }
+        } catch (err) {
+          // Ignore lookup errors
         }
         
         // Try to find an image
@@ -73,10 +90,11 @@ async function runAggregation() {
         }
         
         try {
-          db.prepare(`
-            INSERT INTO articles (title, slug, description, content, url, image_url, source_name, category, published_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `).run(title, slug, description, content, url, image_url, source_name, category, published_at);
+          await db.execute({
+            sql: `INSERT INTO articles (title, slug, description, content, url, image_url, source_name, category, published_at)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            args: [title, slug, description, content, url, image_url, source_name, category, published_at]
+          });
           console.log(`Added: ${title}`);
           results.added++;
         } catch (err) {

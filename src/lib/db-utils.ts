@@ -1,32 +1,43 @@
 import db from './db';
 
-export function getArticles(limit = 20, category = null) {
-  let query = 'SELECT * FROM articles';
-  let params = [];
+export async function getArticles(limit = 20, category = null) {
+  let sql = 'SELECT * FROM articles';
+  let args = [];
   
   if (category) {
-    query += ' WHERE category = ?';
-    params.push(category);
+    sql += ' WHERE category = ?';
+    args.push(category);
   }
   
-  query += ' ORDER BY published_at DESC LIMIT ?';
-  params.push(limit);
+  sql += ' ORDER BY published_at DESC LIMIT ?';
+  args.push(limit);
   
-  return db.prepare(query).all(...params);
+  const result = await db.execute({ sql, args });
+  return result.rows || [];
 }
 
-export function getArticleBySlug(slug: string) {
-  return db.prepare('SELECT * FROM articles WHERE slug = ?').get(slug);
+export async function getArticleBySlug(slug: string) {
+  const result = await db.execute({ 
+    sql: 'SELECT * FROM articles WHERE slug = ?', 
+    args: [slug] 
+  });
+  return result.rows && result.rows[0] ? result.rows[0] : null;
 }
 
-export function getCategories() {
-  return db.prepare('SELECT DISTINCT category FROM articles').all().map((row: any) => row.category);
+export async function getCategories() {
+  const result = await db.execute('SELECT DISTINCT category FROM articles');
+  return (result.rows || []).map((row: any) => row.category);
 }
 
-export function getStats() {
-  const totalArticles = db.prepare('SELECT COUNT(*) as count FROM articles').get().count;
-  const lastArticle = db.prepare('SELECT published_at FROM articles ORDER BY published_at DESC LIMIT 1').get();
-  const articlesBySource = db.prepare('SELECT source_name, COUNT(*) as count FROM articles GROUP BY source_name').all();
+export async function getStats() {
+  const totalResult = await db.execute('SELECT COUNT(*) as count FROM articles');
+  const totalArticles = totalResult.rows ? totalResult.rows[0].count : 0;
+  
+  const lastResult = await db.execute('SELECT published_at FROM articles ORDER BY published_at DESC LIMIT 1');
+  const lastArticle = lastResult.rows && lastResult.rows[0] ? lastResult.rows[0] : null;
+  
+  const sourceResult = await db.execute('SELECT source_name, COUNT(*) as count FROM articles GROUP BY source_name');
+  const articlesBySource = sourceResult.rows || [];
   
   return {
     totalArticles,

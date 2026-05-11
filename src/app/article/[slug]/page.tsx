@@ -7,7 +7,7 @@ import { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
   if (!article) return { title: 'Article Not Found' };
   
   return {
@@ -24,13 +24,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     notFound();
   }
 
-  const relatedArticles = getArticles(6).filter((a: any) => a.id !== article.id);
+  const allArticles = await getArticles(6);
+  const relatedArticles = allArticles.filter((a: any) => a.id !== article.id);
 
   return (
     <div className="max-w-4xl mx-auto">

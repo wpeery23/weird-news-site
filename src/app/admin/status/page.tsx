@@ -1,8 +1,8 @@
 import { getStats } from "@/lib/db-utils";
 import { formatDistance } from "date-fns";
 
-export default function StatusPage() {
-  const stats = getStats();
+export default async function StatusPage() {
+  const stats = await getStats();
 
   return (
     <div className="max-w-2xl mx-auto">
