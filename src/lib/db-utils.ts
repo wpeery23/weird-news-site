@@ -31,13 +31,16 @@ export async function getCategories() {
 
 export async function getStats() {
   const totalResult = await db.execute('SELECT COUNT(*) as count FROM articles');
-  const totalArticles = totalResult.rows ? totalResult.rows[0].count : 0;
+  const totalArticles = totalResult.rows && totalResult.rows[0] ? Number(totalResult.rows[0].count) : 0;
   
   const lastResult = await db.execute('SELECT published_at FROM articles ORDER BY published_at DESC LIMIT 1');
   const lastArticle = lastResult.rows && lastResult.rows[0] ? lastResult.rows[0] : null;
   
   const sourceResult = await db.execute('SELECT source_name, COUNT(*) as count FROM articles GROUP BY source_name');
-  const articlesBySource = sourceResult.rows || [];
+  const articlesBySource = sourceResult.rows ? sourceResult.rows.map((row: any) => ({
+    source_name: row.source_name,
+    count: Number(row.count)
+  })) : [];
   
   return {
     totalArticles,

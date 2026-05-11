@@ -2,7 +2,7 @@ const { createClient } = require('@libsql/client');
 
 const db = createClient({
   url: process.env.TURSO_DATABASE_URL || 'libsql://weird-news-wpeery23.aws-us-east-1.turso.io',
-  authToken: process.env.TURSO_AUTH_TOKEN || process.env.DATABASE_AUTH_TOKEN
+  authToken: process.env.DATABASE_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN
 });
 
 // Initialize database schema

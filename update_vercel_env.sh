@@ -1,0 +1,3 @@
+#!/bin/bash
+# Update Vercel environment variables with new Turso token
+vercel env add TURSO_AUTH_TOKEN "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3Nzg1MzMzMDYsImlkIjoiMDE5ZTE4YmQtYjYwMS03MjAzLTg2OGUtNjdlODBkMzUwZGE0IiwicmlkIjoiNjk1Y2IyYzktZjkyNC00ODE4LTg2ZGItYWNmNWI1ODBjOTZiIn0.5BznqciHQ0NC5q97_IEFDK74uQvDGQKZN0iVGiIU_r-1r8f49h4x9EwIfkF9S8FhQ1Ys3M-kq83UAXAK6o6jDg" production 2>&1 || echo "Trying with vercel CLI..."
