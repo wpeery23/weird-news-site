@@ -2,7 +2,8 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-const dataDir = path.join(process.cwd(), 'data');
+// Use /tmp for Vercel serverless (writable temp directory)
+const dataDir = process.env.VERCEL ? '/tmp/data' : path.join(process.cwd(), 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
