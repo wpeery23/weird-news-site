@@ -20,7 +20,7 @@ export default async function StatusPage() {
           <div className="bg-zinc-100 dark:bg-zinc-800 p-6 border-2 border-black">
             <p className="text-xs font-black uppercase text-gray-500 mb-1">Last Update</p>
             <p className="text-xl font-black uppercase">
-              {stats.lastUpdate ? formatDistance(new Date(stats.lastUpdate), new Date(), { addSuffix: true }) : 'Never'}
+              {stats.lastUpdate ? formatDistance(new Date(String(stats.lastUpdate)), new Date(), { addSuffix: true }) : 'Never'}
             </p>
           </div>
         </div>
