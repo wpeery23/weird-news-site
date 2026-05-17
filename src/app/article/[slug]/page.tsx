@@ -12,10 +12,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   return {
     title: `${article.title} | Bizarre & Weird`,
-    description: article.description?.substring(0, 160),
+    description: String(article.description || '').substring(0, 160),
     openGraph: {
       title: article.title,
-      description: article.description?.substring(0, 160),
+      description: String(article.description || '').substring(0, 160),
       images: article.image_url ? [article.image_url] : [],
       type: 'article',
     }
