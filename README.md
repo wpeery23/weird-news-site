@@ -58,3 +58,4 @@ To swap with live AdSense code, update `src/components/AdUnit.tsx`.
 The project currently uses a local SQLite database. For production on Vercel, we recommend migrating to **Turso** (which is SQLite-compatible and works at the edge).
 Update `src/lib/db.js` to use the `@libsql/client` if you move to Turso.
 // force redeploy
+// force fresh deploy Sun May 17 22:10:57 UTC 2026
